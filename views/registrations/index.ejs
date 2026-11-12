@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Registrations | EventHub</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <span class="brand">✦ EventHub</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/events">Events</a>
+      <a href="/registrations">My Registrations</a>
+      <form action="/auth/logout" method="post"><button class="logout" type="submit">Log out</button></form>
+    </div>
+  </header>
+
+  <main class="page">
+    <h1>Hello, <%= name %>!</h1>
+    <p class="muted">This is your registration record.</p>
+
+    <% if (registrations.length === 0) { %>
+      <p class="muted">You have not registered for any events yet. Go to <a href="/events">Events</a> to join one.</p>
+    <% } else { %>
+      <table class="grid">
+        <thead>
+          <tr><th>Event Code</th><th>Event</th><th>Registration Time</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% registrations.forEach(function (reg) { %>
+            <tr>
+              <td><a href="/events/<%= reg.eventCode %>"><%= reg.eventCode %></a></td>
+              <td><%= eventMap[reg.eventCode] ? eventMap[reg.eventCode].title : '(event removed)' %></td>
+              <td><%= new Date(reg.registeredAt).toLocaleString() %></td>
+              <td>
+                <% if (reg.status === 'Confirmed') { %>
+                  <span class="pill pill-ok">Confirmed</span>
+                <% } else { %>
+                  <span class="pill pill-muted">Cancelled</span>
+                <% } %>
+              </td>
+              <td>
+                <% if (reg.status === 'Confirmed') { %>
+                  <form action="/registrations/<%= reg._id %>/cancel" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-small" onclick="return confirm('Cancel this registration?');">Cancel Registration</button>
+                  </form>
+                <% } else { %>
+                  <form action="/registrations" method="post" style="display:inline;">
+                    <input type="hidden" name="eventCode" value="<%= reg.eventCode %>">
+                    <button type="submit" class="btn btn-small">Re-register</button>
+                  </form>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+</body>
+</html>

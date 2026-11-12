@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Details - <%= event.eventCode %> | EventHub</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <span class="brand">✦ EventHub</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/events">Events</a>
+      <a href="/registrations">My Registrations</a>
+      <form action="/auth/logout" method="post"><button class="logout" type="submit">Log out</button></form>
+    </div>
+  </header>
+
+  <main class="page">
+    <h1>Event Details</h1>
+    <p class="muted">Operator: <%= name %></p>
+
+    <div class="detail-box">
+      <div class="detail-item"><span class="detail-label">Event Code:</span> <%= event.eventCode %></div>
+      <div class="detail-item"><span class="detail-label">Event Name:</span> <%= event.title %></div>
+      <div class="detail-item"><span class="detail-label">Description:</span> <%= event.description || '—' %></div>
+      <div class="detail-item"><span class="detail-label">Category:</span> <%= event.category %></div>
+      <div class="detail-item"><span class="detail-label">Venue:</span> <%= event.venue %></div>
+      <div class="detail-item"><span class="detail-label">Start Time:</span> <%= new Date(event.startAt).toLocaleString() %></div>
+      <div class="detail-item"><span class="detail-label">End Time:</span> <%= event.endAt ? new Date(event.endAt).toLocaleString() : '—' %></div>
+      <div class="detail-item"><span class="detail-label">Capacity:</span> <%= event.capacity %> people</div>
+      <div class="detail-item"><span class="detail-label">Status:</span> <span class="pill"><%= event.status %></span></div>
+      <div class="detail-item"><span class="detail-label">Organizer:</span> <%= event.organizer || '—' %></div>
+    </div>
+
+    <div class="actions">
+      <% if (registration) { %>
+        <p class="success">You are registered for this event (Confirmed).</p>
+        <form action="/registrations/<%= registration._id %>/cancel" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('Cancel this registration?');">Cancel Registration</button>
+        </form>
+      <% } else { %>
+        <form action="/registrations" method="post" style="display:inline;">
+          <input type="hidden" name="eventCode" value="<%= event.eventCode %>">
+          <button type="submit" class="btn">Register for this event</button>
+        </form>
+      <% } %>
+
+      <a href="/events" class="btn btn-secondary">Back to List</a>
+      <a href="/events/<%= event.eventCode %>/edit" class="btn btn-warning">Edit Event</a>
+
+      <form action="/events/<%= event.eventCode %>/delete" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this event? Related registrations will also be removed.');">Delete Event</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

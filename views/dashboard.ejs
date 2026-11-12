@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard | EventHub</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <span class="brand">✦ EventHub</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/events">Events</a>
+      <a href="/registrations">My Registrations</a>
+      <form action="/auth/logout" method="post"><button class="logout" type="submit">Log out</button></form>
+    </div>
+  </header>
+
+  <main class="page">
+    <p class="eyebrow">DASHBOARD</p>
+    <h1>Hello, <%= name %>!</h1>
+    <p class="muted">Manage events and keep track of the events you have joined.</p>
+
+    <div class="card-grid">
+      <a class="dashboard-card" href="/events">
+        <h2>Event List</h2>
+        <p>Browse, search, create, edit and delete events.</p>
+      </a>
+      <a class="dashboard-card" href="/registrations">
+        <h2>My Registrations</h2>
+        <p>View your registration records and cancel a registration.</p>
+      </a>
+      <a class="dashboard-card" href="/events/new">
+        <h2>Create Event</h2>
+        <p>Publish a new event for other users to join.</p>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

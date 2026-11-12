@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event List | EventHub</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <span class="brand">✦ EventHub</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/events">Events</a>
+      <a href="/registrations">My Registrations</a>
+      <a href="/events/new">Create Event</a>
+      <form action="/auth/logout" method="post"><button class="logout" type="submit">Log out</button></form>
+    </div>
+  </header>
+
+  <main class="page">
+    <h1>Event List</h1>
+    <p class="muted">Welcome, <%= name %>. Search by title, status or category.</p>
+
+    <form class="search-bar" action="/events" method="get">
+      <input type="text" name="keyword" placeholder="Search title..." value="<%= filters.keyword %>">
+      <select name="status">
+        <option value="">All statuses</option>
+        <% statuses.forEach(function (s) { %>
+          <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
+        <% }); %>
+      </select>
+      <select name="category">
+        <option value="">All categories</option>
+        <% categories.forEach(function (c) { %>
+          <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
+        <% }); %>
+      </select>
+      <button class="btn" type="submit">Search</button>
+      <a class="btn btn-secondary" href="/events">Reset</a>
+    </form>
+
+    <table class="grid">
+      <thead>
+        <tr><th>Event Code</th><th>Title</th><th>Category</th><th>Status</th><th>Start Time</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <% if (events.length === 0) { %>
+          <tr><td colspan="6">No events matched your search.</td></tr>
+        <% } else { events.forEach(function (event) { %>
+          <tr>
+            <td><%= event.eventCode %></td>
+            <td><%= event.title %></td>
+            <td><%= event.category %></td>
+            <td><span class="pill"><%= event.status %></span></td>
+            <td><%= event.startAt ? event.startAt.toLocaleString() : 'Not set' %></td>
+            <td><a href="/events/<%= event.eventCode %>">View Details</a></td>
+          </tr>
+        <% }); } %>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

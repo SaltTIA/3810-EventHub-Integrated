@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Event - <%= event.eventCode %> | EventHub</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <span class="brand">✦ EventHub</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/events">Events</a>
+      <a href="/registrations">My Registrations</a>
+      <form action="/auth/logout" method="post"><button class="logout" type="submit">Log out</button></form>
+    </div>
+  </header>
+
+  <main class="page">
+    <h1>Edit Event: <%= event.eventCode %></h1>
+    <% if (error) { %><div class="error" role="alert"><%= error %></div><% } %>
+
+    <form class="form-card" action="/events/<%= event.eventCode %>/update" method="post">
+      <label>Title
+        <input type="text" name="title" value="<%= event.title %>" required maxlength="120">
+      </label>
+      <label>Description
+        <textarea name="description" rows="3" maxlength="2000"><%= event.description %></textarea>
+      </label>
+      <label>Category
+        <select name="category" required>
+          <% categories.forEach(function (cat) { %>
+            <option value="<%= cat %>" <%= event.category === cat ? 'selected' : '' %>><%= cat %></option>
+          <% }); %>
+        </select>
+      </label>
+      <label>Venue
+        <input type="text" name="venue" value="<%= event.venue %>" required maxlength="120">
+      </label>
+      <label>Capacity
+        <input type="number" name="capacity" value="<%= event.capacity %>" required min="1">
+      </label>
+      <label>Start At
+        <%
+          let startValue = '';
+          if (event.startAt) {
+            const start = new Date(event.startAt);
+            start.setMinutes(start.getMinutes() - start.getTimezoneOffset());
+            startValue = start.toISOString().slice(0, 16);
+          }
+        %>
+        <input type="datetime-local" name="startAt" value="<%= startValue %>" required>
+      </label>
+      <label>End At (optional)
+        <%
+          let endValue = '';
+          if (event.endAt) {
+            const end = new Date(event.endAt);
+            end.setMinutes(end.getMinutes() - end.getTimezoneOffset());
+            endValue = end.toISOString().slice(0, 16);
+          }
+        %>
+        <input type="datetime-local" name="endAt" value="<%= endValue %>">
+      </label>
+      <label>Status
+        <select name="status" required>
+          <% statuses.forEach(function (stat) { %>
+            <option value="<%= stat %>" <%= event.status === stat ? 'selected' : '' %>><%= stat %></option>
+          <% }); %>
+        </select>
+      </label>
+      <label>Organizer (optional)
+        <input type="text" name="organizer" value="<%= event.organizer %>" maxlength="100">
+      </label>
+      <div class="actions">
+        <button class="btn" type="submit">Save Changes</button>
+        <a href="/events/<%= event.eventCode %>" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
