@@ -66,3 +66,12 @@ curl -i http://localhost:3000/api/events
 
 - This is a local integrated build, not yet pushed to the shared GitHub repository.
 - The event pages, registration flow, search, IDOR fix, mass-assignment fix and dashboard links were integrated from the teammate UI work.
+
+
+## Repository
+
+- Public repo: <https://github.com/SaltTIA/3810-EventHub-Integrated>
+- Screenshots: `docs/screens/`
+- Review / integration report: `docs/REVIEW-REPORT.md`
+
+> This is an independent integrated build created for local testing and review. It does **not** modify the official group repository or the teammate UI repository.
